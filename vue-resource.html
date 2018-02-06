@@ -12,13 +12,85 @@
 <body>
   <div id="app" class="container">
     <h1>vue-resource插件讲解</h1>
-    <a href="javascript:;" class="btn btn-primary">Get请求</a>
-    <a href="javascript:;" class="btn btn-primary">Post请求</a>
-    <a href="javascript:;" class="btn btn-primary">JSONP请求</a>
+    <a href="javascript:;" class="btn btn-primary" v-on:click="get">Get请求</a>
+    <a href="javascript:;" class="btn btn-primary" v-on:click="post">Post请求</a>
+    <a href="javascript:;" class="btn btn-primary" v-on:click="jsonp">JSONP请求</a>
+    <a href="javascript:;" class="btn btn-primary" v-on:click="http">http请求</a>
+    <span>{{msg}}</span>
   </div>
   <script>
     new Vue({
+      el:"#app",
+      data:{
+        msg : ''
+      },
+      // 可以配出根目录地址
+      http:{
+        root:'http://localhost:3000'
+      },
+      mounted:function () {
+        //全局的拦截器
+        Vue.http.interceptors.push(function(request,next){
+          //请求中
+          console.log('request init');
 
+          //请求完之后
+          next(function(response){
+            console.log('response init');
+            return response;
+          })
+        });
+      },
+      methods:{
+        get:function(){
+          this.$http.get("package.json",{
+            //参数一定要写到params中
+            params:{
+              userId:'101'
+            },
+            headers:{
+              token:'abcd'
+            }
+          }).then(res=>{
+            this.msg = res.data
+          },error=>{
+            this.msg = error;
+          })
+        },
+        post:function(){
+          this.$http.post("package.json",{
+            userId : '102',
+          },{
+            headers:{
+              access_token : "abc"
+            }
+          }).then(res=>{
+            this.msg = res.data;
+          },error=>{
+            this.msg = error;
+          })
+        },
+        jsonp:function(){
+          this.$http.jsonp()
+        },
+        http:function(){
+          this.$http({
+            url:"package.json",
+            params:{
+              userId:'103'
+            },
+            headers:{
+              token:"123"
+            },
+            timeout:5,
+            before:function(){
+              console.log('before init')
+            }
+          }).then(function(res){
+            this.msg = res.data
+          })
+        }
+      }
     })
   </script>
 </body>
