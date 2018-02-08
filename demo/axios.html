@@ -41,6 +41,8 @@
             }
           }).then(res=>{
             this.msg = res.data;
+          }).catch(function(err){
+            console.log('error init.'+err);
           })
         },
         post:function(){
