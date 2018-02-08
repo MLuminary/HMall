@@ -25,7 +25,17 @@
         msg : ''
       },
       mounted:function () {
+        //全局请求拦截器
+        axios.interceptors.request.use(function(config){
+          console.log('request init');
+          return config;
+        })
+        //全局响应拦截器
+        axios.interceptors.reponse.use(function(config){
+          console.log('response init');
 
+          return response;
+        })
       },
       methods:{
         get:function(){
@@ -46,13 +56,39 @@
           })
         },
         post:function(){
-
+          axios.post('cc.json',{
+            userId:'888'
+          },{
+            headers:{
+              token:"tom"
+            }
+          }).then(res=>{
+            this.msg = res.data;
+          }).catch(error=>{
+            console.log(error)
+          })
         },
         jsonp:function(){
 
         },
         http:function(){
-
+          axios({
+            url:'cc.json',
+            method:'get',
+            //post在data中定义
+            data:{
+              userId:'101'
+            },
+            //get要在params中定义
+            params:{
+              userId:'102'
+            },
+            headers:{
+              token:'http-test'
+            }
+          }).then(res=>{
+            this.msg = res.data;
+          })
         }
       }
     })
