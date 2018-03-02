@@ -14,7 +14,6 @@
     <h1>axios插件讲解</h1>
     <a href="javascript:;" class="btn btn-primary" v-on:click="get">Get请求</a>
     <a href="javascript:;" class="btn btn-primary" v-on:click="post">Post请求</a>
-    <a href="javascript:;" class="btn btn-primary" v-on:click="jsonp">JSONP请求</a>
     <a href="javascript:;" class="btn btn-primary" v-on:click="http">http请求</a>
     <span>{{msg}}</span>
   </div>
@@ -25,7 +24,17 @@
         msg : ''
       },
       mounted:function () {
+        //全局请求拦截器
+        axios.interceptors.request.use(function(config){
+          console.log('request init');
+          return config;
+        })
+        //全局响应拦截器
+        axios.interceptors.reponse.use(function(config){
+          console.log('response init');
 
+          return response;
+        })
       },
       methods:{
         get:function(){
@@ -41,16 +50,41 @@
             }
           }).then(res=>{
             this.msg = res.data;
+          }).catch(function(err){
+            console.log('error init.'+err);
           })
         },
         post:function(){
-
-        },
-        jsonp:function(){
-
+          axios.post('cc.json',{
+            userId:'888'
+          },{
+            headers:{
+              token:"tom"
+            }
+          }).then(res=>{
+            this.msg = res.data;
+          }).catch(error=>{
+            console.log(error)
+          })
         },
         http:function(){
-
+          axios({
+            url:'cc.json',
+            method:'get',
+            //post在data中定义
+            data:{
+              userId:'101'
+            },
+            //get要在params中定义
+            params:{
+              userId:'102'
+            },
+            headers:{
+              token:'http-test'
+            }
+          }).then(res=>{
+            this.msg = res.data;
+          })
         }
       }
     })
