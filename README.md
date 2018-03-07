@@ -23,3 +23,4 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 ## 注意点
 
 `assets` 目录和 `static` 目录都是存放静态资源的，但是 `assets` 更偏向于存放组件的静态资源
+
