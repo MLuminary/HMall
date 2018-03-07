@@ -12,4 +12,4 @@ new Vue({
   router,
   components: { App },
   template: '<App/>'
-})
+}) //.$mount("#app") 也可以通过 mount挂载
