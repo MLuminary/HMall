@@ -1,14 +1,13 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import HelloWorld from '@/components/HelloWorld' //@相当于src
-import GoodLists from './../views/GoodsList'
+import GoodLists from './../views/GoodsList.vue'
 
-Vue.use(Router)
+Vue.use(Router);
 
 export default new Router({
   routes: [
     {
-      path: '/goods/:goodsId',
+      path: '/',
       name: 'GoodLists',
       component: GoodLists
     }
