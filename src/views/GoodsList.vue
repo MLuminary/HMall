@@ -38,7 +38,7 @@
           <div class="accessory-list-wrap">
             <div class="accessory-list col-4">
               <ul>
-                <li v-for="(item) in goodsList">
+                <li v-for="(item,index) in goodsList" :key="index">
                   <div class="pic">
                     <a href="#"><img v-bind:src="'/static/'+item.productImg" alt=""></a>
                   </div>
