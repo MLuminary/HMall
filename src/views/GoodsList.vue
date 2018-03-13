@@ -40,7 +40,7 @@
               <ul>
                 <li v-for="(item,index) in goodsList" :key="index">
                   <div class="pic">
-                    <a href="#"><img v-bind:src="'/static/'+item.productImg" alt=""></a>
+                    <a href="#"><img v-bind:src="'/static/'+item.productImage" alt=""></a>
                   </div>
                   <div class="main">
                     <div class="name">{{item.productName}}</div>
@@ -83,9 +83,9 @@
     },
     methods: {
       getGoodsList(){
-        axios.get("api/goods").then((result)=>{
-          var res = result.data.data;
-          this.goodsList = res.result;
+        axios.get("/goods").then((response)=>{
+          let result = response.data.result;
+          this.goodsList = result.list;
         })
       }
     }

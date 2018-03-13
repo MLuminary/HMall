@@ -10,7 +10,12 @@ module.exports = {
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
-    proxyTable: {},
+    //跨域代理 当我们访问 '/goods' 时会转发到 target 的网址
+    proxyTable: {
+      '/goods' : {
+        target:'http://localhost:3000'
+      }
+    },
 
     // Various Dev Server settings
     host: 'localhost', // can be overwritten by process.env.HOST

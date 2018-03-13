@@ -7,5 +7,5 @@ var productSchema = new Schema({
   "salePrice":Number,
   "productImage":String
 })
-
+// Good 默认会找数据库中 goos 集合，所以数据库中的集合尽量都要加s
 module.exports = mongoose.model('Good',productSchema);
