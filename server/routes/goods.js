@@ -18,7 +18,15 @@ mongoose.connection.on("error",function(){
 })
 
 router.get("/",function(req,res,next){
-  Goods.find({},function(err,doc){
+  //分页查询
+  let page = parseInt(req.param("page"));//页数
+  let pageSize = parseInt(req.param("pageSize"));//一页有多少个内容
+  let sort = req.param("sort");//正序(1)或升序(-1)
+  let skip = (page-1) * pageSize;//跳过文档的个数
+  let params = {};//需要查询的条件
+  let goodsModel = Goods.find(params).skip(skip).limit(pageSize);
+  goodsModel.sort({'salePrice':sort});
+  goodsModel.exec({},function(err,doc){
     if(err){
       res.json({
         status:'1',

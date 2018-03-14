@@ -54,3 +54,27 @@ proxyTable: {
 
 这样当 `axios.get(/goods)` 时，会默认转到 `localhost:3000/goods` 中获取对应数据
 
+## 分页查询
+
+```js
+//分页查询
+let page = parseInt(req.param("page"));//页数
+let pageSize = parseInt(req.param("pageSize"));//一页有多少个内容
+let sort = req.param("sort");//正序(1)或升序(-1)
+let skip = (page-1) * pageSize;//跳过文档的个数
+let params = {};//需要查询的条件
+let goodsModel = Goods.find(params).skip(skip).limit(pageSize);
+goodsModel.sort({'salePrice':sort});
+goodsModel.exec({},function(err,doc){...});
+```
+
+以上就是根据 `salePrice` 实现正序分页查询
+
+## 滚动加载
+
+滚动加载用的是 `vue-infinite-scroll` 插件，具体使用也可以看其官网
+
+https://www.npmjs.com/package/vue-infinite-scroll
+
+也可以结合本例来理解使用
+
