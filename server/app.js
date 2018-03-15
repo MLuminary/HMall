@@ -23,6 +23,23 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+//全局拦截
+app.use(function(req,res,next){
+  if(req.cookies.userId){
+    next();
+  }else{//请求的 url
+    if(req.path=='/users/login'||req.path=='/users/logout'||req.path=='/goods/list'){
+      next();
+    }else{
+      res.json({
+        status:'10001',
+        msg:'当前未登录',
+        result:''
+      })
+    }
+  }
+});
+
 app.use('/', index);
 app.use('/users', users);
 app.use('/goods', goods);

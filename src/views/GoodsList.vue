@@ -111,7 +111,7 @@
           priceLevel: this.priceLevel
         }
         this.loading = true;
-        axios.get("/goods",{params:param}).then((response)=>{
+        axios.get("/goods/list",{params:param}).then((response)=>{
           //加载完成 loading 图标隐藏
           this.loading = false;
           if(response.data.status == "0") {

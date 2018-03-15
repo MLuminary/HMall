@@ -17,7 +17,7 @@ mongoose.connection.on("error", function() {
   console.log("MongoDB connected error");
 });
 
-router.get("/", function(req, res, next) {
+router.get("/list", function(req, res, next) {
   //分页查询
   let params = {}; //需要查询的条件
   let page = parseInt(req.param("page")); //页数
