@@ -127,6 +127,7 @@ export default {
         this.errorTip = true;
       }
     },
+    //登出
     logOut(){
       this.loginModalFlag = true;
       axios.post('users/logout').then((res)=>{
@@ -137,6 +138,7 @@ export default {
         }
       })
     },
+    //检查是否登录过，cookie没过期的话直接登录
     checkLogin(){
       axios.get('/users/checkLogin').then((res)=>{
         let data = res.data;

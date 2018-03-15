@@ -48,10 +48,6 @@ router.post("/logout",function(req,res,next){
     path:"/",
     maxAge:-1
   })
-  res.cookie("userName","",{
-    path:'/',
-    maxAge:-1
-  })
   res.json({
     status:"0",
     msg:'',

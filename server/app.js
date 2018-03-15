@@ -25,10 +25,21 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 //全局拦截
 app.use(function(req,res,next){
+  let flag = false;
+  let whiteUrl = [
+    '/users/login',
+    '/users/logout',
+    '/goods/list'
+  ]
+  whiteUrl.forEach(function(item){
+    if(req.path == item){
+      flag = true;
+    }
+  })
   if(req.cookies.userId){
     next();
   }else{//请求的 url
-    if(req.path=='/users/login'||req.path=='/users/logout'||req.path=='/goods/list'){
+    if(flag){
       next();
     }else{
       res.json({
