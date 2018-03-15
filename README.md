@@ -78,3 +78,28 @@ https://www.npmjs.com/package/vue-infinite-scroll
 
 也可以结合本例来理解使用
 
+## 添加购物车中 mogoose 添加属性的问题
+
+本项目中如下代码在开始时没有生效
+
+```js
+gDoc.checked = 1;
+gDoc.productNum = 1;
+uDoc.cartList.push(gDoc);
+```
+
+原因就是，如果想要向 `gDoc` 中添加属性，其 `Schema` 必须要定义此属性
+
+```js
+var productSchema = new Schema({
+  "productId":String,
+  "productName":String,
+  "salePrice":Number,
+  "productImage":String,
+  //添加如下两行代码
+  "checked": Number,
+  "productNum": Number
+})
+```
+
+
