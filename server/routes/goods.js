@@ -98,12 +98,8 @@ router.post("/addCart", function(req, res, next) {
             reject(gErr);
           } else {
             if (gDoc) {
-              let obj = {
-                checked : 1,
-                productNum : 1
-              }
-              var gDoc = Object.assign(gDoc,obj);
-              console.log(gDoc);
+              gDoc.checked = 1;
+              gDoc.productNum = 1;
               uDoc.cartList.push(gDoc);
               uDoc.save(function(err, doc) {
                 if (err) {
