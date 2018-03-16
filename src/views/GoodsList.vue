@@ -10,7 +10,7 @@
         <div class="filter-nav">
           <span class="sortby">Sort by:</span>
           <a href="javascript:void(0)" class="default cur">Default</a>
-          <a href="javascript:void(0)" @click="sortGoods" class="price">Price <svg class="icon icon-arrow-short"><use xlink:href="#icon-arrow-short"></use></svg></a>
+          <a href="javascript:void(0)" @click="sortGoods" class="price">Price <svg class="icon icon-arrow-short" v-bind:class="{'sort-up':sortFlag}"><use xlink:href="#icon-arrow-short"></use></svg></a>
           <a href="javascript:void(0)" class="filterby stopPop">Filter by</a>
         </div>
         <div class="accessory-result">
@@ -52,6 +52,27 @@
         </div>
       </div>
     </div>
+    <modal v-bind:mdShow="mdShow" v-on:close="closeModal">
+      <p slot="message">
+          请先登录,否则无法加入到购物车中!
+      </p>
+      <div slot="btnGroup">
+          <a class="btn btn--m" href="javascript:;" @click="mdShow = false">关闭</a>
+      </div>
+    </modal>
+    <modal v-bind:mdShow="mdShowCart" v-on:close="closeModal">
+      <p slot="message">
+        <svg class="icon-status-ok">
+          <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-status-ok"></use>
+        </svg>
+        <span>加入购物车成!</span>
+      </p>
+      <div slot="btnGroup">
+        <a class="btn btn--m" href="javascript:;" @click="mdShowCart = false">继续购物</a>
+        <router-link class="btn btn--m btn--red" href="javascript:;" to="/cart">查看购物车</router-link>
+      </div>
+    </modal>
+    <div class="md-overlay" v-if="mdShow||mdShowCart" @click="closeModal"></div>
     <nav-footer></nav-footer>
   </div>
 </template>
@@ -62,6 +83,7 @@
   import NavHeader from './../components/NavHeader.vue'
   import NavFooter from './../components/NavFooter.vue'
   import NavBread from './../components/NavBread.vue'
+  import Modal from './../components/Modal.vue'
   import axios from 'axios'
   export default {
     data() {
@@ -72,6 +94,8 @@
         pageSize: 8,
         busy: true,
         loading:false,
+        mdShow:false,
+        mdShowCart:false,
         priceArea : [
           {
             leftprice:0,
@@ -96,7 +120,8 @@
     components:{
       NavHeader,
       NavFooter,
-      NavBread
+      NavBread,
+      Modal
     },
     mounted() {
       this.getGoodsList();
@@ -160,13 +185,18 @@
         }).then((res)=>{
           let data = res.data;
           if(data.status == 0){
-            alert("加入成功");
+            this.mdShowCart = true;
           }else{
-            alert("msg:" + data.msg);
+            this.mdShow = true;
           }
         })
+      },
+      closeModal(){
+        this.mdShow = false;
+        this.mdShowCart = false;
       }
     }
   };
 </script>
+
 
