@@ -46,13 +46,23 @@ npm install
 
 ```js
 proxyTable: {
-      '/goods' : {
-        target:'http://localhost:3000'
-      }
-    },
+    '/goods' : {
+      target:'http://localhost:3000'
+    }
+  },
 ```
 
 这样当 `axios.get(/goods)` 时，会默认转到 `localhost:3000/goods` 中获取对应数据
+
+```js
+proxyTable: {
+    '/goods/*' : {
+      target:'http://localhost:3000'
+    }
+  },
+```
+
+`/goods/*` 会匹配所有的 `/goods/` 后的二级路由
 
 ## 分页查询
 
@@ -78,7 +88,7 @@ https://www.npmjs.com/package/vue-infinite-scroll
 
 也可以结合本例来理解使用
 
-## 添加购物车中 mogoose 添加属性的问题
+## 添加购物车中 mongoose 添加属性的问题
 
 本项目中如下代码在开始时没有生效
 
@@ -100,6 +110,17 @@ var productSchema = new Schema({
   "checked": Number,
   "productNum": Number
 })
+```
+
+## mongoose 更新某行
+
+查找条件 `userId` 等于 `userId`, `cartList.productId` 等于 `productId` 的内容，并将查找到内容的 `cartList` 下的 `productNum` 修改为 `productNum`，`checked` 修改为 `checked`
+
+
+```js
+User.update({"userId":userId, "cartList.productId":productId},{
+  "cartList.$.productNum": productNum,"cartList.$.checked": checked
+},function(err, doc){..})
 ```
 
 
