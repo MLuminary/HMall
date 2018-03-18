@@ -109,8 +109,8 @@
           <div class="cart-foot-inner">
             <div class="cart-foot-l">
               <div class="item-all-check">
-                <a href="javascipt:;">
-                  <span class="checkbox-btn item-check-btn">
+                <a href="javascipt:;"  @click="toggleCheckAll">
+                  <span class="checkbox-btn item-check-btn" v-bind:class="{'check':checkAllFlag}">
                       <svg class="icon icon-ok"><use xlink:href="#icon-ok"/></svg>
                   </span>
                   <span>Select all</span>
@@ -172,70 +172,95 @@
   import Modal from './../components/Modal.vue'
   import axios from 'axios'
   export default{
-      data(){
-          return{
-            cartList: [],
-            modalConfirm: false,
-            productId:0
-          }
-      },
-      mounted(){
-        this.init()
-      },
-      components:{
-        NavHeader,
-        NavFooter,
-        NavBread,
-        Modal
-      },
-      methods:{
-        init () {
-          //请求获取用户购物车信息
-          axios.get("/users/cartList").then((response)=>{
-            let data = response.data
-            this.cartList = data.result
-          })
-        },
-        delCartConfirm (productId) {
-          this.productId = productId
-          this.modalConfirm = true
-        },
-        closeModal () {
-          this.modalConfirm = false
-        },
-        delCart () {
-          axios.post("users/cartDel",{
-            productId:this.productId
-          }).then((response)=>{
-            let res = response.data;
-            if(res.status == '0'){
-              this.modalConfirm = false;
-              // this.init();
-              //少调用一次请求
-              this.cartList = this.cartList.filter((value)=>value.productId!=this.productId);
-            }
-          })
-        },
-        //加减购物车商品数量
-        editCart (flag, item) {
-          if(flag === 'add') {
-            item.productNum++
-          }else if(flag === 'minu'){
-            if(item.productNum <= 1){
-              return;
-            }
-            item.productNum--;
-          }else{
-            item.checked = item.checked == 1?0:1;
-          }
-          axios.post('/users/cartEdit',{
-            productId: item.productId,
-            productNum: item.productNum,
-            checked: item.checked
-          }).then((response)=>{
-            let res = response.data;
-          })
+    data(){
+        return{
+          cartList: [],
+          modalConfirm: false,
+          productId: 0
         }
+    },
+    computed: {
+      checkAllFlag(){
+        return this.checkedCount === this.cartList.length
+      },
+      checkedCount(){
+        let i = 0;
+        this.cartList.forEach((item)=>{
+          if(item.checked == 1)i++
+        })
+        return i;
       }
+    },
+    mounted(){
+      this.init()
+    },
+    components:{
+      NavHeader,
+      NavFooter,
+      NavBread,
+      Modal
+    },
+    methods:{
+      init () {
+        //请求获取用户购物车信息
+        axios.get("/users/cartList").then((response)=>{
+          let data = response.data
+          this.cartList = data.result
+        })
+      },
+      delCartConfirm (productId) {
+        this.productId = productId
+        this.modalConfirm = true
+      },
+      closeModal () {
+        this.modalConfirm = false
+      },
+      delCart () {
+        axios.post("users/cartDel",{
+          productId:this.productId
+        }).then((response)=>{
+          let res = response.data;
+          if(res.status == '0'){
+            this.modalConfirm = false;
+            // this.init();
+            //少调用一次请求
+            this.cartList = this.cartList.filter((value)=>value.productId!=this.productId);
+          }
+        })
+      },
+      //加减购物车商品数量
+      editCart (flag, item) {
+        if(flag === 'add') {
+          item.productNum++
+        }else if(flag === 'minu'){
+          if(item.productNum <= 1){
+            return;
+          }
+          item.productNum--;
+        }else{
+          item.checked = item.checked == 1 ? 0 : 1;
+        }
+        axios.post('/users/cartEdit',{
+          productId: item.productId,
+          productNum: item.productNum,
+          checked: item.checked
+        }).then((response)=>{
+          let res = response.data;
+        })
+      },
+      toggleCheckAll(){
+        let flag = !this.checkAllFlag;
+
+        this.cartList.forEach((item)=>{
+          item.checked = flag;
+        })
+
+        axios.post('/users/editCheckAll',{
+          checkAll: flag
+        }).then((response)=>{
+          let res = response.data
+        })
+      }
+    }
   }
 </script>
