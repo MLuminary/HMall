@@ -76,6 +76,7 @@
                      class="regi_login_input regi_login_input_left login-input-no input_text"
                      placeholder="Password"
                      v-model="userPwd"
+                     @keyup.enter="login"
                     >
                   </li>
                 </ul>
