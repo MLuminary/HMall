@@ -92,7 +92,7 @@
                 </div>
                 <div class="cart-tab-5">
                   <div class="cart-item-opration">
-                    <a href="javascript:;" class="item-edit-btn">
+                    <a href="javascript:;" class="item-edit-btn" @click="delCartConfirm(item.productId)">
                       <svg class="icon icon-del">
                         <use xlink:href="#icon-del"></use>
                       </svg>
@@ -127,6 +127,14 @@
         </div>
       </div>
     </div>
+    <Modal :mdShow="modalConfirm" @close="closeModal">
+      <p slot="message">你确认要删除此条数据吗?</p>
+      <div slot="btnGroup">
+        <a class="btn btn--m" href="javascript:;" @click="delCart">确认</a>
+        <a class="btn btn--m" href="javascript:;" @click="closeModal">关闭</a>
+      </div>
+    </Modal>
+    <div class="md-overlay" v-if="modalConfirm" @click="closeModal"></div>
     <nav-footer></nav-footer>
   </div>
 </template>
@@ -164,7 +172,9 @@
   export default{
       data(){
           return{
-            cartList: []
+            cartList: [],
+            modalConfirm: false,
+            productId:0
           }
       },
       mounted(){
@@ -178,9 +188,30 @@
       },
       methods:{
         init () {
+          //请求获取用户购物车信息
           axios.get("/users/cartList").then((response)=>{
             let data = response.data
             this.cartList = data.result
+          })
+        },
+        delCartConfirm (productId) {
+          this.productId = productId
+          this.modalConfirm = true
+        },
+        closeModal () {
+          this.modalConfirm = false
+        },
+        delCart () {
+          axios.post("users/cartDel",{
+            productId:this.productId
+          }).then((response)=>{
+            let res = response.data;
+            if(res.status == '0'){
+              this.modalConfirm = false;
+              // this.init();
+              //少调用一次请求
+              this.cartList = this.cartList.filter((value)=>value.productId!=this.productId);
+            }
           })
         }
       }
