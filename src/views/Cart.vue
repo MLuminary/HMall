@@ -119,7 +119,7 @@
             </div>
             <div class="cart-foot-r">
               <div class="item-total">
-                Item total: <span class="total-price">500</span>
+                Item total: <span class="total-price">{{totalPrice}}</span>
               </div>
               <div class="btn-wrap">
                 <a class="btn btn--red">Checkout</a>
@@ -189,6 +189,15 @@
           if(item.checked == 1)i++
         })
         return i;
+      },
+      totalPrice(){
+        let total = 0;
+        this.cartList.forEach((item)=>{
+          if(item.checked == 1){
+            total += parseFloat(item.salePrice)*parseFloat(item.productNum)
+          }
+        })
+        return total;
       }
     },
     mounted(){
