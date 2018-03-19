@@ -112,7 +112,7 @@ var productSchema = new Schema({
 })
 ```
 
-## mongoose 更新某行
+## mongoose 更新对象或数组中某行
 
 查找条件 `userId` 等于 `userId`, `cartList.productId` 等于 `productId` 的内容，并将查找到内容的 `cartList` 下的 `productNum` 修改为 `productNum`，`checked` 修改为 `checked`
 
