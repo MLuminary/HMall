@@ -72,7 +72,6 @@
         <router-link class="btn btn--m btn--red" href="javascript:;" to="/cart">查看购物车</router-link>
       </div>
     </modal>
-    <div class="md-overlay" v-if="mdShow||mdShowCart" @click="closeModal"></div>
     <nav-footer></nav-footer>
   </div>
 </template>

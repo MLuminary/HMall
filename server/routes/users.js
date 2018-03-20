@@ -215,11 +215,7 @@ router.post('/setDefault',function(req, res, next){
       if(doc){
         let addressList = doc.addressList;
         addressList.forEach((item)=>{
-          if(item.addressId == addressId){
-            item.isDefault = true
-          }else{
-            item.isDefault = false
-          }
+          item.addressId == addressId ? item.isDefault = true : item.isDefault = false;
         })
       }
       doc.save(function(er,docu){
@@ -236,6 +232,35 @@ router.post('/setDefault',function(req, res, next){
             result: 'suc'
           })
         }
+      })
+    }
+  })
+})
+
+//地址的删除
+router.post('/delAddress',function(req, res, next){
+  let userId = req.cookies.userId,
+      addressId = req.body.addressId;
+
+  User.update({userId:userId},{
+    $pull:{
+      "addressList": {
+        "addressId": addressId
+      }
+    }
+  },
+  function(err, doc){
+    if(err){
+      res.json({
+        status:'1',
+        msg: err.message,
+        result: ''
+      })
+    }else{
+      res.json({
+        status:'0',
+        msg: "",
+        result: 'suc'
       })
     }
   })

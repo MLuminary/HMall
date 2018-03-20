@@ -60,14 +60,17 @@
             <div class="addr-list-wrap">
               <div class="addr-list">
                 <ul>
-                  <li v-for="(item,index) in addressListFilter" :key="index" v-bind:class="{'check':checkIndex === index}" @click="checkIndex = index">
+                  <li v-for="(item,index) in addressListFilter"
+                      :key="index" v-bind:class="{'check':checkIndex === index}"
+                      @click="checkIndex = index;selectedAddrId = item.addressId"
+                        >
                     <dl>
                       <dt>{{item.userName}}</dt>
                       <dd class="address">{{item.streetName}}</dd>
                       <dd class="tel">{{item.tel}}</dd>
                     </dl>
                     <div class="addr-opration addr-del">
-                      <a href="javascript:;" class="addr-del-btn">
+                      <a href="javascript:;" class="addr-del-btn" @click="delAddressConfirm(item.addressId)">
                         <svg class="icon icon-del"><use xlink:href="#icon-del"></use></svg>
                       </a>
                     </div>
@@ -116,11 +119,20 @@
               </div>
             </div>
             <div class="next-btn-wrap">
-              <a class="btn btn--m btn--red" href="#">Next</a>
+              <router-link class="btn btn--m btn--red" href="#" v-bind:to="{path:'orderConfirm',query:{'addressId':this.selectedAddrId}}">Next</router-link>
             </div>
           </div>
         </div>
       </div>
+      <modal :mdShow="mdShow" @close="mdShow = false">
+        <p slot="message">
+          你是否确认要删除此地址?
+        </p>
+        <div slot="btnGroup">
+          <a class="btn btn--m" href="javascript:;" @click="delAddress">确认</a>
+          <a class="btn btn--m" href="javascript:;" @click="mdShow = false">取消</a>
+        </div>
+      </modal>
       <nav-footer></nav-footer>
     </div>
 </template>
@@ -138,7 +150,10 @@ export default {
     return {
       limit: 3,
       checkIndex: 0,
-      addressList: []
+      addressList: [],
+      mdShow: false, //是否删除提示框
+      addressId: 0,
+      selectedAddrId: 0
     };
   },
   components: {
@@ -156,6 +171,7 @@ export default {
     }
   },
   methods: {
+    //初始化地址信息
     initAddress() {
       axios.get('/users/addressList').then(response => {
         let res = response.data;
@@ -164,9 +180,11 @@ export default {
         }
       });
     },
+    //扩展地址信息
     expand() {
       this.limit = this.limit === 3 ? this.addressList.length : 3;
     },
+    //设置默认地址信息
     setDefault(addressId) {
       axios
         .post('/users/setDefault', { addressId: addressId })
@@ -178,6 +196,25 @@ export default {
             });
           }
         });
+    },
+    //删除地址确认
+    delAddressConfirm(addressId){
+      this.mdShow = true;
+      this.addressId = addressId;
+    },
+    //删除地址
+    delAddress(){
+      axios
+        .post('/users/delAddress',{
+          "addressId":this.addressId
+        })
+        .then(response => {
+          let res = response.data;
+          if(res.status=='0'){
+            this.mdShow = false;
+            this.initAddress();
+          }
+        })
     }
   }
 };

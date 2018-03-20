@@ -136,7 +136,6 @@
         <a class="btn btn--m" href="javascript:;" @click="closeModal">关闭</a>
       </div>
     </Modal>
-    <div class="md-overlay" v-if="modalConfirm" @click="closeModal"></div>
     <nav-footer></nav-footer>
   </div>
 </template>
