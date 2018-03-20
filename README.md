@@ -123,4 +123,20 @@ User.update({"userId":userId, "cartList.productId":productId},{
 },function(err, doc){..})
 ```
 
+## cookie 的存取
+
+`cookie` 存储
+
+```js
+res.cookie("userId",doc.userId,{
+  path:'/',
+  maxAge:1000*60*60
+})
+```
+
+`cookie` 拿取
+
+```js
+let userId = req.cookies.userId
+```
 

@@ -2,7 +2,7 @@
   <div>
     <nav-header></nav-header>
     <nav-bread>
-      <a slot="bread" href="/cart">cart</a>
+      <span slot="bread">Cart</span>
     </nav-bread>
     <svg style="position: absolute; width: 0; height: 0; overflow: hidden;" version="1.1"
          xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -122,7 +122,7 @@
                 Item total: <span class="total-price">{{totalPrice | currency("￥") }}</span>
               </div>
               <div class="btn-wrap">
-                <a class="btn btn--red">Checkout</a>
+                <a class="btn btn--red" v-bind:class="{'btn--dis':checkedCount==0}" @click="checkOut">Checkout</a>
               </div>
             </div>
           </div>
@@ -257,6 +257,7 @@
           let res = response.data;
         })
       },
+      //全选按钮
       toggleCheckAll(){
         let flag = !this.checkAllFlag;
 
@@ -269,6 +270,14 @@
         }).then((response)=>{
           let res = response.data
         })
+      },
+      //检查跳转地址页面
+      checkOut(){
+        if(this.checkedCount > 0){
+          this.$router.push({
+            path:"/address"
+          })
+        }
       }
     }
   }
