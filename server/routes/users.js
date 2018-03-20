@@ -24,11 +24,11 @@ router.post("/login",function(req ,res, next){
     }else{
       res.cookie("userId",doc.userId,{
         path:'/',
-        maxAge:1000*60*60
+        maxAge:1000*60*60*24
       })
       res.cookie("userName",doc.userName,{
         path:'/',
-        maxAge:1000*60*60
+        maxAge:1000*60*60*24
       })
       // req.session.user = doc;
       res.json({
@@ -265,5 +265,7 @@ router.post('/delAddress',function(req, res, next){
     }
   })
 })
+
+
 
 module.exports = router;
