@@ -72,9 +72,9 @@
                       </a>
                     </div>
                     <div class="addr-opration addr-set-default">
-                      <a href="javascript:;" class="addr-set-default-btn"><i>Set default</i></a>
+                      <a href="javascript:;" class="addr-set-default-btn" v-if="!item.isDefault" @click="setDefault(item.addressId)"><i>Set default</i></a>
                     </div>
-                    <div class="addr-opration addr-default">Default address</div>
+                    <div class="addr-opration addr-default" v-if="item.isDefault">Default address</div>
                   </li>
                   <li class="addr-new">
                     <div class="add-new-inner">
@@ -125,47 +125,60 @@
     </div>
 </template>
 <style>
+
 </style>
 <script>
-  import NavHeader from './../components/NavHeader.vue'
-  import NavFooter from './../components/NavFooter.vue'
-  import NavBread from './../components/NavBread.vue'
-  import Modal from './../components/Modal.vue'
-  import axios from 'axios'
-  export default{
-      data(){
-          return{
-            limit:3,
-            checkIndex: 0,
-            addressList:[]
+import NavHeader from './../components/NavHeader.vue'
+import NavFooter from './../components/NavFooter.vue'
+import NavBread from './../components/NavBread.vue'
+import Modal from './../components/Modal.vue'
+import axios from 'axios'
+export default {
+  data() {
+    return {
+      limit: 3,
+      checkIndex: 0,
+      addressList: []
+    };
+  },
+  components: {
+    NavHeader,
+    NavFooter,
+    NavBread,
+    Modal
+  },
+  mounted() {
+    this.initAddress();
+  },
+  computed: {
+    addressListFilter() {
+      return this.addressList.slice(0, this.limit);
+    }
+  },
+  methods: {
+    initAddress() {
+      axios.get('/users/addressList').then(response => {
+        let res = response.data;
+        if (res.status === '0') {
+          this.addressList = res.result;
+        }
+      });
+    },
+    expand() {
+      this.limit = this.limit === 3 ? this.addressList.length : 3;
+    },
+    setDefault(addressId) {
+      axios
+        .post('/users/setDefault', { addressId: addressId })
+        .then(response => {
+          let res = response.data;
+          if (res.status == '0') {
+            this.addressList.forEach(item => {
+              item.addressId == addressId ? item.isDefault = true : item.isDefault = false;
+            });
           }
-      },
-      components:{
-        NavHeader,
-        NavFooter,
-        NavBread,
-        Modal
-      },
-      mounted () {
-        this.initAddress()
-      },
-      computed: {
-        addressListFilter(){
-          return this.addressList.slice(0,this.limit)
-        }
-      },
-      methods: {
-        initAddress(){
-          axios.get('/users/addressList').then((response)=>{
-            let res = response.data
-            if(res.status==='0'){
-              this.addressList = res.result
-            }
-          })
-        },
-        expand(){
-          this.limit = this.limit === 3 ? this.addressList.length : 3
-        }
-      }
+        });
+    }
   }
+};
 </script>
