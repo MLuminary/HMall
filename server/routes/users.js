@@ -1,6 +1,8 @@
 var express = require('express');
 var router = express.Router();
 
+require('./../util/util') //格式化日期
+
 var User = require('./../models/user')
 
 /* GET users listing. */
@@ -266,6 +268,80 @@ router.post('/delAddress',function(req, res, next){
   })
 })
 
+//生成订单
+router.post('/payMent',function(req, res, next){
+  let userId = req.cookies.userId,
+      orderTotal = req.body.orderTotal,
+      addressId = req.body.addressId;
+
+  User.findOne({userId:userId},function(err, doc){
+    if(err){
+      res.json({
+        status:'1',
+        msg: err.message,
+        result: ''
+      })
+    }else{
+      let address = '',goodsList=[];
+
+      //获取订单地址
+      doc.addressList.forEach(item=>{
+        if(item.isDefault === true){
+          address = item;
+        }
+      })
+      //订单商品详情
+      doc.cartList.forEach(item=>{
+        if(item.checked == '1'){
+          goodsList.push(item);
+        }
+      })
+
+      //拼接订单id
+      let platform = '777'; //平台码
+      let r1 = Math.floor(Math.random()*10);
+      let r2 = Math.floor(Math.random()*10);
+      let sysdate = new Date().Format('yyyyMMddhhmmss');
+
+      let createDate = new Date().Format('yyyy-MM-dd hh:mm:ss');
+
+      let orderId = platform + r1 + sysdate + r2;
+
+      //订单详细信息
+      let order = {
+        orderId: orderId,
+        orderTotal: orderTotal,
+        addressInfo: address,
+        goodsList: goodsList,
+        orderStatus: '1',
+        createDate: createDate
+      }
+
+      //添加到数据库
+      doc.orderList.push(order);
+
+      //保存
+      doc.save(function(err1,doc1){
+        if(err1){
+          res.json({
+            status:'1',
+            msg: err1.message,
+            result: ''
+          })
+        }else{
+          res.json({
+            status:'0',
+            msg:'',
+            result:{
+              orderId: order.orderId,
+              orderTotal: order.orderTotal
+            }
+          })
+        }
+      })
+    }
+  })
+})
 
 
 module.exports = router;
