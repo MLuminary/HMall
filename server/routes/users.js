@@ -343,5 +343,48 @@ router.post('/payMent',function(req, res, next){
   })
 })
 
+//根据订单id查询订单信息
+router.get("/orderDetial",function(req, res, next){
+  let userId = req.cookies.userId,
+      orderId = req.param('orderId');
+
+  User.findOne({userId:userId},function(err, userInfo){
+    if(err){
+      res.json({
+        status: '1',
+        msg: err.message,
+        result: ''
+      })
+    }else{
+      let orderTotal = 0;
+      let orderList = userInfo.orderList;
+
+      orderList.forEach(item=>{
+        if(item.orderId == orderId){
+          orderTotal = item.orderTotal;
+        }
+      })
+
+      if(orderTotal === 0){
+        res.json({
+          status:'120001',
+          msg:'无此订单',
+          result:''
+        })
+      }
+
+      res.json({
+        status:'0',
+        msg:'',
+        result:{
+          orderId:orderId,
+          orderTotal: orderTotal
+        }
+      })
+
+
+    }
+  })
+})
 
 module.exports = router;

@@ -145,6 +145,7 @@ import NavFooter from './../components/NavFooter.vue'
 import NavBread from './../components/NavBread.vue'
 import Modal from './../components/Modal.vue'
 import axios from 'axios'
+
 export default {
   data() {
     return {
