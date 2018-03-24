@@ -112,7 +112,7 @@ router.post("/cartDel", function (req, res, next){
       res.json({
         status:'0',
         msg:'',
-        result:'suc'
+        result: 'suc'
       })
     }
   })
@@ -385,6 +385,33 @@ router.get("/orderDetial",function(req, res, next){
 
     }
   })
+})
+
+//查询购物车商品数量
+router.get("/getCartCount",function(req, res, next){
+  if(req.cookies && req.cookies.userId) {
+    let userId = req.cookies.userId;
+    User.findOne({userId:userId},function(err, doc){
+      if(err){
+        res.json({
+          status:'1',
+          msg:err.message,
+          result:''
+        })
+      }else{
+        let cartList = doc.cartList;
+        let CartCount = 0;
+        cartList.map(function(item){
+          CartCount += parseInt(item.productNum);
+        })
+        res.json({
+          status:'0',
+          msg:'',
+          result: CartCount
+        })
+      }
+    })
+  }
 })
 
 module.exports = router;

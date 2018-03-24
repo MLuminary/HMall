@@ -33,7 +33,7 @@
                 <a href="javascript:void(0)" class="navbar-link" v-if="!nickName"  @click="loginModalFlag=true">Login</a>
                 <a href="javascript:void(0)" class="navbar-link" v-if="nickName" @click="logOut">Logout</a>
                 <div class="navbar-cart-container">
-                  <span class="navbar-cart-count"></span>
+                  <span class="navbar-cart-count" v-if="cartCount > 0">{{cartCount}}</span>
                   <a class="navbar-link navbar-cart-link" href="/#/cart">
                     <svg class="navbar-cart-logo">
                       <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-cart"></use>
@@ -94,6 +94,7 @@
 <script>
 import './../assets/css/login.css'
 import axios from 'axios'
+import { mapState } from 'vuex'
 export default {
   data() {
     return {
@@ -101,11 +102,13 @@ export default {
       userPwd: '',
       errorTip: false,
       loginModalFlag: true,
-      nickName: ''
     };
   },
   mounted(){
     this.checkLogin();
+  },
+  computed: {
+    ...mapState(['nickName','cartCount'])
   },
   methods: {
     login() {
@@ -119,7 +122,8 @@ export default {
             if (data.status == '0') {
               this.loginModalFlag = false;
               this.errorTip = false;
-              this.nickName = data.result.userName;
+              this.$store.commit("updateUserInfo",data.result);
+              this.getCartCount();
             } else {
               this.errorTip = true;
             }
@@ -143,10 +147,22 @@ export default {
     checkLogin(){
       axios.get('/users/checkLogin').then((res)=>{
         let data = res.data;
+        // let path = this.$route.pathname;
         if(data.status == '0'){
-          this.nickName = data.result;
+          this.$store.commit("updateUserInfo",data.result); //触发updateUserInfo Mutation
+          this.getCartCount();
           this.loginModalFlag = false;
+        }else{
+          if(this.$route.path != "/"){
+            this.$router.push("/");
+          }
         }
+      })
+    },
+    getCartCount() {
+      axios.get("/users/getCartCount").then(response=>{
+        let data = response.data;
+        this.$store.commit("initCartCount",data.result)
       })
     }
   }

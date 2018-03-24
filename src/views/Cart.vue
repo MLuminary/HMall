@@ -94,7 +94,7 @@
                 </div>
                 <div class="cart-tab-5">
                   <div class="cart-item-opration">
-                    <a href="javascript:;" class="item-edit-btn" @click="delCartConfirm(item.productId)">
+                    <a href="javascript:;" class="item-edit-btn" @click="delCartConfirm(item)">
                       <svg class="icon icon-del">
                         <use xlink:href="#icon-del"></use>
                       </svg>
@@ -175,7 +175,8 @@
         return{
           cartList: [],
           modalConfirm: false,
-          productId: 0
+          productId: 0,
+          delItem:{}
         }
     },
     computed: {
@@ -216,8 +217,8 @@
           this.cartList = data.result
         })
       },
-      delCartConfirm (productId) {
-        this.productId = productId
+      delCartConfirm (item) {
+        this.delItem = item
         this.modalConfirm = true
       },
       closeModal () {
@@ -225,14 +226,15 @@
       },
       delCart () {
         axios.post("users/cartDel",{
-          productId:this.productId
+          productId:this.delItem.productId
         }).then((response)=>{
           let res = response.data;
           if(res.status == '0'){
             this.modalConfirm = false;
             // this.init();
             //少调用一次请求
-            this.cartList = this.cartList.filter((value)=>value.productId!=this.productId);
+            this.cartList = this.cartList.filter((value)=>value.productId != this.delItem.productId);
+            this.$store.commit("updateCartCount",-this.delItem.productNum)
           }
         })
       },
@@ -254,6 +256,13 @@
           checked: item.checked
         }).then((response)=>{
           let res = response.data;
+          let num = 0;
+          if(flag === 'add'){
+            num = 1;
+          }else if(flag === 'minu'){
+            num = -1;
+          }
+          this.$store.commit("updateCartCount",num);
         })
       },
       //全选按钮
