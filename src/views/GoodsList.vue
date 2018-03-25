@@ -33,7 +33,7 @@
               <ul>
                 <li v-for="(item,index) in goodsList" :key="index">
                   <div class="pic">
-                    <a href="#"><img v-bind:src="'/static/'+item.productImage" alt=""></a>
+                    <a href="#"><img v-lazy="'/static/'+item.productImage" alt=""></a>
                   </div>
                   <div class="main">
                     <div class="name">{{item.productName}}</div>
@@ -77,8 +77,6 @@
 </template>
 
 <script>
-  import './../assets/css/base.css'
-  import './../assets/css/product.css'
   import NavHeader from './../components/NavHeader.vue'
   import NavFooter from './../components/NavFooter.vue'
   import NavBread from './../components/NavBread.vue'

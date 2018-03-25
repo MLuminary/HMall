@@ -34,7 +34,7 @@
                 <a href="javascript:void(0)" class="navbar-link" v-if="nickName" @click="logOut">Logout</a>
                 <div class="navbar-cart-container">
                   <span class="navbar-cart-count" v-if="cartCount > 0">{{cartCount}}</span>
-                  <a class="navbar-link navbar-cart-link" href="/#/cart">
+                  <a class="navbar-link navbar-cart-link" href="/cart">
                     <svg class="navbar-cart-logo">
                       <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-cart"></use>
                     </svg>
@@ -92,23 +92,22 @@
 </template>
 
 <script>
-import './../assets/css/login.css'
 import axios from 'axios'
 import { mapState } from 'vuex'
 export default {
   data() {
     return {
-      userName: '',
-      userPwd: '',
-      errorTip: false,
-      loginModalFlag: true,
+      userName: '', //输入的用户名
+      userPwd: '', //密码
+      errorTip: false, //错误提示
+      loginModalFlag: false, //登录框是否弹出
     };
-  },
-  mounted(){
-    this.checkLogin();
   },
   computed: {
     ...mapState(['nickName','cartCount'])
+  },
+  mounted () {
+    this.checkLogin();
   },
   methods: {
     login() {
@@ -119,10 +118,10 @@ export default {
           })
           .then(res => {
             let data = res.data;
-            if (data.status == '0') {
+            if (data.status === '0') {//登录成功
               this.loginModalFlag = false;
               this.errorTip = false;
-              this.$store.commit("updateUserInfo",data.result);
+              this.$store.commit("updateUserInfo",data.result.userName);
               this.getCartCount();
             } else {
               this.errorTip = true;
@@ -134,11 +133,12 @@ export default {
     },
     //登出
     logOut(){
-      this.loginModalFlag = true;
       axios.post('users/logout').then((res)=>{
+        this.loginModalFlag = true;
         let data = res.data;
-        if(data.status == '0'){
-          this.nickName = ''
+        if(data.status == '0'){ //清空输入框
+          this.$store.commit("updateUserInfo",'');
+          this.userName = ''
           this.userPwd = ''
         }
       })
@@ -147,22 +147,21 @@ export default {
     checkLogin(){
       axios.get('/users/checkLogin').then((res)=>{
         let data = res.data;
-        // let path = this.$route.pathname;
         if(data.status == '0'){
           this.$store.commit("updateUserInfo",data.result); //触发updateUserInfo Mutation
-          this.getCartCount();
           this.loginModalFlag = false;
         }else{
           if(this.$route.path != "/"){
             this.$router.push("/");
           }
+          this.loginModalFlag = true;
         }
       })
     },
     getCartCount() {
       axios.get("/users/getCartCount").then(response=>{
         let data = response.data;
-        this.$store.commit("initCartCount",data.result)
+        this.$store.commit("updateCartCount",data.result)
       })
     }
   }
