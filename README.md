@@ -142,7 +142,43 @@ let userId = req.cookies.userId
 
 ## 图片预加载
 
+
 `VueLazyload`
 
 https://www.npmjs.com/package/vue-lazyload
 
+
+## 线上部署
+
+### 服务器安装 node
+
+去官网下载压缩包然后用 fileZilla 传到服务器中
+
+我把压缩包放置在 /node 中
+
+**解压**
+
+tar -xvf   node-v8.11.1-linux-x64.tar.xz
+
+mv node-v8.11.1-linux-x64  nodejs
+
+然后解压并把文件名改名为 nodejs
+
+**建立软连接**
+
+ln -s node/nodejs/bin/npm /usr/local/bin/
+
+ln -s node/nodejs/bin/node /usr/local/bin/
+
+
+### 服务器安装 mongodb
+
+https://www.cnblogs.com/liuq1991/p/8073895.html
+
+**停止 Mongodb**
+
+```shell
+# cd /usr/local/mongodb/bin
+
+# ./mongod -shutdown -dbpath=/usr/local/mongodb/data
+```

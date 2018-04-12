@@ -9,7 +9,7 @@ module.exports = {
 
     // Paths
     assetsSubDirectory: 'static',
-    assetsPublicPath: '/',
+    assetsPublicPath: '/HMall',
     //跨域代理 当我们访问 '/goods' 时会转发到 target 的网址
     proxyTable: {
       '/goods' : {
