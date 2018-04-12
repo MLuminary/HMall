@@ -140,3 +140,9 @@ res.cookie("userId",doc.userId,{
 let userId = req.cookies.userId
 ```
 
+## 图片预加载
+
+`VueLazyload`
+
+https://www.npmjs.com/package/vue-lazyload
+
