@@ -133,7 +133,7 @@ export default {
     },
     //登出
     logOut(){
-      axios.post('users/logout').then((res)=>{
+      axios.post('/users/logout').then((res)=>{
         this.loginModalFlag = true;
         let data = res.data;
         if(data.status == '0'){ //清空输入框
