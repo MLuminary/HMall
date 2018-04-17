@@ -64,7 +64,7 @@ new Vue({
     // },
     //获得购物车的总数量
     getCartCount(){
-      axios.get("users/getCartCount").then(res=>{
+      axios.get("/users/getCartCount").then(res=>{
         let data = res.data;
         if(data.status === '0'){
           this.$store.commit("updateCartCount",data.result)
@@ -74,4 +74,4 @@ new Vue({
   },
   components: { App },
   template: '<App/>'
-}) //.$mount("#app") 也可以通过 mount挂载
+}); //.$mount("#app") 也可以通过 mount挂载

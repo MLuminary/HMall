@@ -16,7 +16,7 @@
   height: 29px;
   margin: 6px 0 0 14px;
   background-position: 4px 5px;
-  background-image: url("/static/icon.png");
+  background-image: url("../../../static/icon.png");
   background-repeat: no-repeat;
 }
 .regi_form_input .IconPwd {
@@ -72,7 +72,7 @@
   line-height: 16px;
   height: 16px;
   text-align: left;
-  background: url("/static/icon.png") 0 -100px no-repeat;
+  background: url("../../../static/icon.png") 0 -100px no-repeat;
 }
 .md-content .error-wrap .error-show{
   visibility: visible;

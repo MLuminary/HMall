@@ -182,3 +182,10 @@ https://www.cnblogs.com/liuq1991/p/8073895.html
 
 # ./mongod -shutdown -dbpath=/usr/local/mongodb/data
 ```
+
+
+### 本地可视化工具连接服务器 mongodb
+
+解决措施
+
+https://segmentfault.com/q/1010000002923686

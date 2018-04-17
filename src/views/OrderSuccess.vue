@@ -16,7 +16,7 @@
         </div>
 
         <div class="order-create">
-          <div class="order-create-pic"><img src="/static/ok-2.png" alt=""></div>
+          <div class="order-create-pic"><img src="static/ok-2.png" alt=""></div>
           <div class="order-create-main">
             <h3>Congratulations! <br>Your order is under processing!</h3>
             <p>
