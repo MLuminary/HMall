@@ -189,3 +189,65 @@ https://www.cnblogs.com/liuq1991/p/8073895.html
 解决措施
 
 https://segmentfault.com/q/1010000002923686
+
+### vue 项目打包发布存在的问题
+
+自己的项目部署在 `服务器根地址/HMall` 中
+
+#### 打包项目发布到服务器空白页问题
+
+自己设置了 `mode:history` ,将其删除即可。
+
+#### 打包项目 css 图片加载不到
+
+```css
+background: url("/static/icon.png") 0 -100px no-repeat
+```
+
+`login.css` 中引用 `static` 中的 `logo.png`，我使用的是绝对路径。按照网上给的解决措施都无法解决
+
+比如
+
+config/index.js 下修改 `assetsPublicPath: './'`, build/utils.js中 修改 `publicPath:'../../'` 或 `publicPath:'/HMall/'`,网页中请求的永远是 `根网址/static/logo.png`,而真正的图片地址为 `根网址/HMall/static/logo.png`
+
+通过谷歌继续查相关内容，得知绝对路径是以域名为起点的，根路径的写法也是不会经过 webpack 处理的，项目发布在 HMall 还是 JMall 来说没有影响。
+
+所以这里需要改成相对路径
+
+```css
+background: url("../../../static/icon.png") 0 -100px no-repeat;
+```
+
+#### nginx 反向代理实现跨域
+
+修改 `server/nginx/conf/vhosts` 中的 `.conf` 文件，如果不存在的话就自己新建一个
+
+```conf
+server {
+  listen 80;#监听端口
+  server_name www.haoqinzz.cn haoqinzz.cn;#监听的域名
+  root /phpstudy/www;#项目根目录
+  index login.html index.html;
+
+  # location /{
+  #   proxy_set_header X-Real-IP $remote_addr;
+  #   proxy_pass http://127.0.0.1:3000/;
+  # }
+  location /users/{
+    proxy_pass http://127.0.0.1:3000/users/;
+  }
+  location /cart/{
+    proxy_pass http://127.0.0.1:3000/cart/;
+  }
+  location /goods/{
+    proxy_pass http://127.0.0.1:3000/goods/;
+  }
+}
+```
+
+因为自己在项目前后端交互采用的是绝对路径，因此直接写 `location /users/`,如果项目中采用的是相对路径，那这里要改为 `location HMall/users/`
+
+
+
+
+
