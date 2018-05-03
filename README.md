@@ -2,6 +2,8 @@
 
 > A Vue.js project
 
+[项目演示](http://haoqinzz.cn/HMall/#/) 用户名 admin  密码 123456
+
 ## Build Setup
 
 ``` bash
