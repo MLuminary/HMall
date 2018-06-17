@@ -11,10 +11,10 @@
 {"productId":"201710010","productName":"小米电视4A","salePrice":2099,"productImage":"10.jpg","productUrl":""}
 
 {"productId":"201710011","productName":"Ear1000","salePrice":1000,"productImage":"11.jpg","productUrl":""}
-db.goods.insert({"productId":"201710012","productName":"Ear1100","salePrice":1100,"productImage":"12.jpg","productUrl":""})
-db.goods.insert({"productId":"201710013","productName":"Ear2000","salePrice":2000,"productImage":"13.jpg","productUrl":""})
-db.goods.insert({"productId":"201710014","productName":"Ear1600","salePrice":1600,"productImage":"14.jpg","productUrl":""})
-db.goods.insert({"productId":"201710015","productName":"Ear1200","salePrice":1200,"productImage":"15.jpg","productUrl":""})
-db.goods.insert({"productId":"201710016","productName":"Ear700","salePrice":700,"productImage":"16.jpg","productUrl":""})
-db.goods.insert({"productId":"201710017","productName":"小钢炮蓝牙音箱","salePrice":129,"productImage":"1.jpg","productUrl":""})
-db.goods.insert({"productId":"201710018","productName":"智能摄像机","salePrice":389,"productImage":"photo.jpg","productUrl":""})
+{"productId":"201710012","productName":"Ear1100","salePrice":1100,"productImage":"12.jpg","productUrl":""}
+{"productId":"201710013","productName":"Ear2000","salePrice":2000,"productImage":"13.jpg","productUrl":""}
+{"productId":"201710014","productName":"Ear1600","salePrice":1600,"productImage":"14.jpg","productUrl":""}
+{"productId":"201710015","productName":"Ear1200","salePrice":1200,"productImage":"15.jpg","productUrl":""}
+{"productId":"201710016","productName":"Ear700","salePrice":700,"productImage":"16.jpg","productUrl":""}
+{"productId":"201710017","productName":"小钢炮蓝牙音箱","salePrice":129,"productImage":"1.jpg","productUrl":""}
+{"productId":"201710018","productName":"智能摄像机","salePrice":389,"productImage":"photo.jpg","productUrl":""}
